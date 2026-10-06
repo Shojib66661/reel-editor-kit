@@ -1,12 +1,21 @@
-"""Remove the burned-in one-word captions with TEMPORAL fill (+ spatial inpaint fallback).
+"""Remove burned-in captions with TEMPORAL fill (+ spatial inpaint fallback).
 
-The old captions are single words on a thin strip (y ~650-790 in the 720x1280
-source) that change every few frames, so most pixels under a word are visible
-in a nearby frame of the same shot. For every masked pixel we take the median
-of the closest unmasked frames (same shot, within +-MAXD frames); pixels never
-uncovered fall back to cv2.inpaint. Beats pure inpainting, which left a smear.
+The old captions change every few frames, so most pixels under a word are visible
+in a nearby frame of the same shot. For every masked pixel we take the median of
+the closest unmasked frames (same shot, within +-MAXD frames); pixels never
+uncovered, or on the person (--person masks), fall back to cv2.inpaint.
 
-usage: clean_captions.py src.mp4 capboxes.json out.mp4 [--shots 0,38,...] [--png dir --frames a,b]
+Where to look for captions:
+  default        caption_detect.py boxes (capboxes.json) with centre y in --band (needs a dark halo)
+  --zones z.json fixed caption zones of their edit: [[t0, t1, [x0, y0, x1, y1]], ...] (seconds).
+                 Use this when words sit on bright decking / sky: the detector misses them there.
+  --extra e.json coloured words / icons: [[t0, t1, [x0, y0, x1, y1], mode], ...]
+                 mode letters: w white glyphs, W raw white (icons), c cyan, o orange/red.
+Glyphs inside a zone = white, low-chroma connected components of text size.
+Still cover the zone in the edit (opaque caption strip): leftovers survive on bright backgrounds.
+
+usage: clean_captions.py src.mp4 capboxes.json out.mp4 [--shots 0,38,...] [--person masks_s_dir]
+       [--zones z.json] [--extra e.json] [--band 670,760] [--png dir --frames a,b]
 """
 import cv2, json, subprocess, sys
 import numpy as np
@@ -16,13 +25,18 @@ arg = lambda k: sys.argv[sys.argv.index(k) + 1] if k in sys.argv else None
 SHOTS = [int(x) for x in arg('--shots').split(',')] if arg('--shots') else [0]
 pngdir = arg('--png')
 only = set(int(x) for x in arg('--frames').split(',')) if arg('--frames') else None
-Y0, Y1 = 600, 840
 MAXD, K = 24, 5
 PERSON = arg('--person')  # dir of person masks (%05d.png); body pixels use spatial inpaint
 
 B = json.load(open(boxes_p))
 N = len(B)
-band = [[b for b in bs if 670 <= (b[1] + b[3]) / 2 <= 760 and 14 <= b[3] - b[1] <= 60] for bs in B]
+BAND = [int(x) for x in arg('--band').split(',')] if arg('--band') else [670, 760]
+ZONES = json.load(open(arg('--zones'))) if arg('--zones') else None
+EXTRA = json.load(open(arg('--extra'))) if arg('--extra') else []
+ys_all = [z[2][1] for z in (ZONES or [])] + [e[2][1] for e in EXTRA] + [BAND[0] - 70]
+ye_all = [z[2][3] for z in (ZONES or [])] + [e[2][3] for e in EXTRA] + [BAND[1] + 80]
+Y0, Y1 = max(0, min(ys_all)), max(ye_all)
+band = [[b for b in bs if BAND[0] <= (b[1] + b[3]) / 2 <= BAND[1] and 14 <= b[3] - b[1] <= 70] for bs in B]
 
 cap = cv2.VideoCapture(src)
 W, H = int(cap.get(3)), int(cap.get(4))
@@ -36,27 +50,54 @@ assert len(frames) == N, (len(frames), N)
 
 
 def region(f):
+    if ZONES is not None:
+        t = f / 30
+        for t0, t1, box in ZONES:
+            if t0 <= t < t1:
+                return box
+        return None
     c = [b for g in range(max(0, f - 3), min(N, f + 4)) for b in band[g]]
     if not c:
         return None
     return [max(0, min(b[0] for b in c) - 10), max(Y0, min(b[1] for b in c) - 10), min(W, max(b[2] for b in c) + 10), min(Y1, max(b[3] for b in c) + 12)]
 
 
+def glyphs(roi, mode):
+    mn, mx = roi.min(2), roi.max(2)
+    b, g, r = roi[..., 0], roi[..., 1], roi[..., 2]
+    m = np.zeros(roi.shape[:2], bool)
+    if 'w' in mode:
+        w = ((mn > 180) & (mx - mn < 50)).astype(np.uint8)
+        n, lab, st, _ = cv2.connectedComponentsWithStats(w, 8)
+        ok = np.zeros(n, bool)
+        for i in range(1, n):
+            x, y, ww, hh, a = st[i]
+            ok[i] = hh <= 62 and ww <= 260 and a <= 5200 and a >= 6
+        m |= ok[lab]
+    if 'W' in mode:  # raw white, no glyph-size filter (icons)
+        m |= (mn > 175) & (mx - mn < 60)
+    if 'c' in mode:
+        m |= (b > 190) & (g > 160) & (r < 140)
+    if 'o' in mode:
+        m |= (r > 150) & (r - b > 110) & (g < 185) & (b < 110) & (r > g + 40)
+    return m.astype(np.uint8)
+
+
 # per-frame mask of the old caption (glyphs + shadow halo), band rows only
 masks = np.zeros((N, Y1 - Y0, W), np.uint8)
 for f in range(N):
+    regs = []
     r = region(f)
-    if not r:
-        continue
-    x0, y0, x1, y1 = r
-    roi = frames[f][y0:y1, x0:x1].astype(np.int16)
-    mn, mx = roi.min(2), roi.max(2)
-    white = ((mn > 175) & (mx - mn < 45)).astype(np.uint8)
-    g = cv2.dilate(white, np.ones((5, 5), np.uint8))
-    sh = np.zeros_like(g)
-    sh[3:, 3:] = g[:-3, :-3]
-    m = cv2.dilate(g | sh, np.ones((15, 15), np.uint8))
-    masks[f, y0 - Y0:y1 - Y0, x0:x1] = m
+    if r:
+        regs.append((r, 'w'))
+    regs += [(bx, md) for t0, t1, bx, md in EXTRA if t0 * 30 <= f < t1 * 30]
+    for (x0, y0, x1, y1), md in regs:
+        roi = frames[f][y0:y1, x0:x1].astype(np.int16)
+        g = cv2.dilate(glyphs(roi, md), np.ones((5, 5), np.uint8))
+        sh = np.zeros_like(g)
+        sh[3:, 3:] = g[:-3, :-3]
+        m = cv2.dilate(g | sh, np.ones((15, 15), np.uint8))
+        masks[f, y0 - Y0:y1 - Y0, x0:x1] |= m
 
 shot_of = lambda f: max(i for i, s in enumerate(SHOTS) if f >= s)
 

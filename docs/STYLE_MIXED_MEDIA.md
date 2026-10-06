@@ -1,6 +1,7 @@
 # Style: Mixed media (cutout sticker + words behind)
 
-Proven on: 4SEASONS Solar Powered Vents (@4seasonsvents) attic reel (2026-10). Template:
+Proven on: 4SEASONS Solar Powered Vents (@4seasonsvents) attic reel and Ruff Roofing
+(@ruff_roofing) damaged-decking reel (2026-10). Template:
 `templates/remotion-mixed-media/`. Reference the user liked: an "invideo" mixed-media ad
 (B&W subject cutout with a thick red outline, red star, giant serif words behind her,
 mixed sans + serif captions, small doodle stickers).
@@ -31,3 +32,18 @@ B&W "underneath" behind him → attic diagram (heat waves on "heat", drops on "m
 3 damage cards keyed to "mold / wood / lifespan" → sun on "solar" → heat lines out of the vent
 → B&W "hydro bill" behind him + bill sticker crossed out → shield on "protect" → logo card
 slides in → 2.8 s end card from the bio only.
+
+## Variant: ink tape captions + kraft boards (Ruff Roofing, 49 s)
+Project: `Shojib66661/promo` branch `claude/eager-bohr-wqmm7g`, folder `ruff-roofing-decking/`
+(composition `RuffDecking.tsx`; `Board`, `TitleTape`, `CheckRow`, `ActionIcon`, `Stamp`, `MoneyNote`
+in `components/Graphics.tsx`; `tornPct` in `lib/brand.ts`).
+- Brand red outline + red star with ink edge; giant cyan italic serif words behind him; colour = Ruff
+  red / cyan / ink.
+- Captions on an opaque torn ink-tape strip (white Montserrat 800 + cyan serif hero), at least as big
+  as the old caption zone, from the chunk's first frame.
+- Their graphics replaced: kraft board with their own photos re-taped + title tape; inspection
+  checklist with marker ticks; "$1,000s" note on "thousands of dollars"; logo card where their logo
+  sticker was; their text-bubble rebuilt as a sticker.
+- Structure: cold-open B-roll + "Water Damage" title → B&W intro with star → logo card → photo board →
+  B&W "Old" → hourglass / $$$ / sheetrock + rafters cards → B&W "Inspection" → checklist board →
+  $1,000s → B-roll "repairing" + GOOD TO GO stamp → B&W "Call" + 4 action icons → end card from bio.

@@ -3,7 +3,7 @@
 > **How to use:** start a new Claude Code session and paste:
 > *"Read https://github.com/Shojib66661/reel-editor-kit/blob/main/MASTER_PROMPT.md and follow it. Here is the video: …"*
 > This file is a living document and is updated after every project
-> (see "Update protocol" at the bottom). Last updated: 2026-10-06 (after project 2, 4SEASONS mixed-media).
+> (see "Update protocol" at the bottom). Last updated: 2026-10-06 (after project 3, Ruff Roofing mixed-media).
 
 ---
 
@@ -62,8 +62,11 @@ my message:
 - **No branding from me** on the video (no watermark, no "edited by").
 - **Defaults on every edit** (do what's best, these are always on):
   - hide the original burned-in captions completely (verify, see §6.4). Thin one-word
-    captions: remove them with `tools/clean_captions.py` (temporal fill + inpaint). Big
-    multi-line captions: cover them (paper-cut caption strips)
+    captions: remove them with `tools/clean_captions.py` (temporal fill + inpaint; `--zones`
+    when words sit on bright decking/sky). If any letters survive, put the new captions on an
+    opaque strip that always covers the old zone. Big multi-line captions: cover them
+    (paper-cut caption strips). Their other graphics (logo stickers, insets, counters,
+    bubbles): cover each with our own version, keyed to source frames
   - new captions in the chosen style, word-timed
   - use **their** brand colours and logo (pull from their profile/end card)
   - new CTA end card with their phone/site/offer from their profile
@@ -74,6 +77,8 @@ my message:
 
 1. **Probe and look**: `ffprobe`; contact sheets every 0.5-2 s; find scene cuts
    (`select='gt(scene,0.15)'`), split screens, inset stickers and caption positions.
+   Then `tools/overlay_scan.py` (frame by frame): short overlays (logo drops, photo insets,
+   counters, text bubbles) fall between contact-sheet tiles.
 2. **Separate audio**: `tools/separate_vocals.sh` gives a clean `vocals.wav`, so cuts don't
    make the old music jump and our music bed can replace theirs.
 3. **Transcribe**: `tools/transcribe.py` on vocals (whisper text + zipformer timings),
@@ -103,6 +108,7 @@ my message:
    or on the cleaned source when our captions are also white text. Make a contact sheet of
    the hits; any that isn't our own graphics = leak → fix → re-render.
 5. Re-transcribe the final voice track and compare to the script.
+   Verify every cut edge first by transcribing ~1 s pieces around it (zipformer starts drift 0.1-0.2 s).
 6. Check the first frame: it's the thumbnail, so it must look good with the hook visible.
 
 ### 7. Deliverables (every outreach video)

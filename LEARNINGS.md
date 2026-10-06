@@ -1,5 +1,30 @@
 # Learnings log (append newest at the top)
 
+## 2026-10-06: Ruff Roofing (@ruff_roofing), mixed-media (third project)
+- **caption_detect needs a dark halo**: it missed most words on bright decking and sky, and the
+  first clean left whole captions. Fix: `clean_captions.py --zones` (fixed caption zones of their
+  edit, glyphs = white low-chroma components of text size) + `--extra` for coloured words (orange
+  WATER DAMAGE / SHEETROCK, cyan names, icons). Even then letters merge with white clouds / sunlit
+  plywood, so the new captions sit on an **opaque ink tape strip that always covers the zone**.
+- The cleaner also wiped the small logo on his shirt (it sits in the caption zone). Hidden under the
+  strip in the video, but build stickers (end-card cutout) from an **untouched original frame**
+  before any caption appears.
+- Their editor's overlays were busy: logo sticker that drops in from the top, photo insets, counter,
+  a text-message bubble. The 1.5 s contact sheet missed the 1.3 s bubble; the render's QA sheet
+  caught it. New `tools/overlay_scan.py` lists every bright-overlay window frame by frame: run it in
+  step 1. Cover each one with our own version (kraft "Board" with their photos re-taped, logo card,
+  bubble sticker), keyed to SOURCE frames so re-cuts don't break the cover.
+- A cover card that overlaps the speaker's face: draw his cutout on top of the card (logo "behind"
+  him), only while it overlaps; afterwards the cutout dragged in a piece of their logo (dog tail).
+- Spaces inside letter-by-letter titles collapse with `inline-block` spans: render ' ' as U+00A0.
+- `clip-path` torn edges in px break when the element size is unknown: `tornPct()` (points in %,
+  jag in px via calc()).
+- Hook cut-ins: zipformer word starts were 0.1-0.2 s off at both hook edges ("you see we have",
+  "right? We have"). Verify each cut point by transcribing 1 s pieces (and 1 s padding) before building.
+- User preferences learned: keeps meaningful lines even if long (kept "to make sure that you don't
+  have any problems in the future"); picks the recommended cold open; no name in DM when the speaker
+  isn't clearly the account owner; offers only when the exact wording is confirmed.
+
 ## 2026-10-06: 4SEASONS Solar Powered Vents, mixed-media (second project)
 - **Remove burned-in captions instead of covering them** when they are thin (one word per
   frame): `tools/clean_captions.py` = temporal fill (median of nearby frames where that pixel
