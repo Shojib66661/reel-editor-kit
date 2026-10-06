@@ -11,8 +11,8 @@ Everything an AI editing session needs to re-edit short-form reels the way
 | `docs/` | Audio rules, environment gotchas, style guides, outreach |
 | `sfx/` | Reusable sound effects (≤5 s, normalised) + `index.json` (search by tags) |
 | `music/` | Reusable music tracks + `index.json` + prompt templates |
-| `tools/` | setup, transcription, vocal separation, caption detection, person cutout, SFX library, audio mixer with gentle ducking |
-| `templates/` | Working Remotion projects per style (paper-cut) |
+| `tools/` | setup, transcription, vocal separation, caption detection + removal, person cutout, SFX library, audio mixer with gentle ducking |
+| `templates/` | Working Remotion projects per style (paper-cut, mixed-media) |
 | `leads/` | Outreach lead log |
 | `projects/` | One note per finished video |
 | `LEARNINGS.md` | What broke and how it was fixed |

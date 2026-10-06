@@ -1,0 +1,26 @@
+{
+  "name": "4seasons-attic-vents-reel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Mixed-media Remotion edit of the 4SEASONS attic / solar vents reel",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render AtticVents out/4seasons-attic-vents.mp4",
+    "still": "remotion still AtticVents out/still.png"
+  },
+  "dependencies": {
+    "@fontsource/caveat-brush": "^5.3.0",
+    "@fontsource/montserrat": "^5.3.0",
+    "@fontsource/playfair-display": "^5.3.0",
+    "@remotion/cli": "4.0.533",
+    "@remotion/fonts": "^4.0.533",
+    "@remotion/media-utils": "4.0.533",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "4.0.533"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "typescript": "^5.4.0"
+  }
+}

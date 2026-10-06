@@ -5,7 +5,7 @@
 set -euo pipefail
 M=${MODELS_DIR:-$HOME/models}
 mkdir -p "$M"
-pip install -q sherpa-onnx onnxruntime opencv-python-headless numpy pillow soundfile pyloudnorm "audio-separator[cpu]"
+pip install -q audioread sherpa-onnx onnxruntime opencv-python-headless numpy pillow soundfile pyloudnorm "audio-separator[cpu]"
 cd "$M"
 get() { [ -f "$2" ] || curl -sSL -o "$2" "$1"; }
 # speech-to-text (whisper = accurate text, zipformer = token timestamps, silero = VAD)

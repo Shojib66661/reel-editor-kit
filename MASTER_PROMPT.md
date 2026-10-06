@@ -3,7 +3,7 @@
 > **How to use:** start a new Claude Code session and paste:
 > *"Read https://github.com/Shojib66661/reel-editor-kit/blob/main/MASTER_PROMPT.md and follow it. Here is the video: …"*
 > This file is a living document and is updated after every project
-> (see "Update protocol" at the bottom). Last updated: 2026-10-06.
+> (see "Update protocol" at the bottom). Last updated: 2026-10-06 (after project 2, 4SEASONS mixed-media).
 
 ---
 
@@ -26,7 +26,7 @@ first message.
    (public, so no auth needed for reading. To push updates, use `add_repo` with push access).
 2. Read, in this order: this file → `docs/ENVIRONMENT.md` (sandbox gotchas, which hosts
    are blocked) → `docs/AUDIO_RULES.md` → `LEARNINGS.md` → the style doc you'll use
-   (`docs/STYLE_PAPER_CUT.md`, …) → `leads/leads.csv` (don't re-pitch someone).
+   (`docs/STYLE_PAPER_CUT.md`, `docs/STYLE_MIXED_MEDIA.md`, …) → `leads/leads.csv` (don't re-pitch someone).
 3. Run `bash ~/kit/tools/setup.sh` (models: speech-to-text, segmentation, vocal split).
 4. Start the new project from a template in `templates/` (copy it into the working
    repo; don't edit the kit's template in place).
@@ -37,14 +37,19 @@ Ask these in one round (tap-to-answer where possible). Skip any I already answer
 my message:
 
 - **Source**: the video file(s), and the business's Instagram handle.
-- **Style**: pick per video. Propose 1-2 styles that fit the brand (paper-cut /
-  mixed-media is proven, see `docs/STYLE_PAPER_CUT.md`). I may send a reference video.
+- **Style**: pick per video. Propose 1-2 styles that fit the brand. Proven: paper-cut
+  (`docs/STYLE_PAPER_CUT.md`) and mixed-media cutout + words-behind (`docs/STYLE_MIXED_MEDIA.md`).
+  I may send a reference video: look at it (contact sheet) before proposing.
 - **Raw footage**: do I have a version without their burned-in captions? (much cleaner)
 - **Claims and offers**: anything you'd put on screen that the person didn't literally
   say (e.g. "FREE consultation" when they said "complimentary", prices, guarantees).
   **Ask; never invent.**
 - **Music**: I make the music myself. Give me a ready-to-paste prompt (see
-  `music/PROMPTS.md`), or reuse a track from `music/index.json`.
+  `music/PROMPTS.md`), or reuse a track from `music/index.json`. While I make it, render the
+  preview with a kit track and name the file `..._TEMP-MUSIC`.
+- **Who is speaking**: if the speaker wears another company's logo (partner contractor),
+  ask what to do with his own CTA ("follow us…").
+- Do a second round of questions after transcribing (wording fixes, claims, last line).
 
 ## 4. Decision rules (my preferences)
 
@@ -52,9 +57,13 @@ my message:
 - **Re-ordering what the person says** (e.g. moving the strongest line to the front as a
   hook): **show me the plan first and wait for my OK.** Never change the meaning.
 - **Length**: cut ~25-35% (repeats, false starts, filler, dead air). Typical result 30-60 s.
+  If the original is already tight (few pauses), say so and cut only what's real; start the
+  CTA over the last line so the end card doesn't make it longer.
 - **No branding from me** on the video (no watermark, no "edited by").
 - **Defaults on every edit** (do what's best, these are always on):
-  - hide the original burned-in captions completely (verify, see §6.4)
+  - hide the original burned-in captions completely (verify, see §6.4). Thin one-word
+    captions: remove them with `tools/clean_captions.py` (temporal fill + inpaint). Big
+    multi-line captions: cover them (paper-cut caption strips)
   - new captions in the chosen style, word-timed
   - use **their** brand colours and logo (pull from their profile/end card)
   - new CTA end card with their phone/site/offer from their profile
@@ -73,7 +82,8 @@ my message:
 4. **Plan the edit** (EDL): sentence-level pieces, cut points in real pauses (vocal stem
    energy), hook candidate. **Send me the plan if it re-orders anything.**
    Verify every piece by re-transcribing it (no clipped words).
-5. **Analyse visuals**: `tools/caption_detect.py` (burned-in caption boxes per frame),
+5. **Analyse visuals**: `tools/capscan.py` / `tools/caption_detect.py` (burned-in caption boxes
+   per frame), `tools/clean_captions.py` (remove them),
    split-screen seam detection, `tools/segment_person.py` (cutout webm for stickers /
    text-behind-subject).
 6. **Build in Remotion** from the template: per-frame timeline JSON (source frame,
@@ -89,8 +99,9 @@ my message:
 1. Contact sheet of the render at 1 fps. Look at every tile.
 2. Stills at every layout change and transition.
 3. Listen-proxy: integrated loudness and true peak (`ebur128`), music envelope printout.
-4. **Caption leak scan**: run `caption_detect.py` on the rendered video (scaled to the
-   source size). Any hit that isn't our own graphics = leak → fix → re-render.
+4. **Caption leak scan**: run `capscan.py` on the rendered video (scaled to the source size),
+   or on the cleaned source when our captions are also white text. Make a contact sheet of
+   the hits; any that isn't our own graphics = leak → fix → re-render.
 5. Re-transcribe the final voice track and compare to the script.
 6. Check the first frame: it's the thumbnail, so it must look good with the hook visible.
 
