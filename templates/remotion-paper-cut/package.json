@@ -1,0 +1,27 @@
+{
+  "name": "hpr-paper-cut-reel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Paper-cut style Remotion edit of the High Performance Roofing 'High Profile Ridge' reel",
+  "scripts": {
+    "studio": "remotion studio",
+    "render": "remotion render HighProfileRidge out/high-profile-ridge-papercut.mp4",
+    "still": "remotion still HighProfileRidge out/still.png"
+  },
+  "dependencies": {
+    "@fontsource/anton": "^5.0.0",
+    "@fontsource/archivo-black": "^5.0.0",
+    "@fontsource/dm-serif-display": "^5.0.0",
+    "@fontsource/permanent-marker": "^5.0.0",
+    "@remotion/cli": "4.0.533",
+    "@remotion/fonts": "^4.0.533",
+    "@remotion/media-utils": "4.0.533",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "4.0.533"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "typescript": "^5.4.0"
+  }
+}

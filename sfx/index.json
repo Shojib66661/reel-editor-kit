@@ -1,0 +1,201 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "paper/marker-scribble",
+      "file": "sfx/paper/marker-scribble.wav",
+      "duration": 0.94,
+      "tags": [
+        "marker",
+        "pen",
+        "scribble",
+        "write",
+        "draw",
+        "check"
+      ],
+      "source": "elevenlabs",
+      "prompt": "Felt-tip marker scribbling fast on paper, short scratchy stroke",
+      "credits": 50.0
+    },
+    {
+      "id": "paper/rip-short",
+      "file": "sfx/paper/rip-short.wav",
+      "duration": 0.515,
+      "tags": [
+        "paper",
+        "rip",
+        "tear",
+        "transition"
+      ],
+      "source": "elevenlabs",
+      "prompt": "Single quick sheet of paper torn in half, crisp close-mic rip",
+      "credits": 50.0
+    },
+    {
+      "id": "paper/rip-short-2",
+      "file": "sfx/paper/rip-short-2.wav",
+      "duration": 0.775,
+      "tags": [
+        "paper",
+        "rip",
+        "tear",
+        "transition"
+      ],
+      "source": "elevenlabs",
+      "prompt": "Single quick sheet of paper torn in half, crisp close-mic rip",
+      "credits": 50.0
+    },
+    {
+      "id": "paper/scissors-snip",
+      "file": "sfx/paper/scissors-snip.wav",
+      "duration": 0.68,
+      "tags": [
+        "paper",
+        "scissors",
+        "snip",
+        "cut",
+        "cutout"
+      ],
+      "source": "elevenlabs",
+      "prompt": "Quick scissors snip cutting paper, two crisp snips",
+      "credits": 50.0
+    },
+    {
+      "id": "paper/stamp-thud",
+      "file": "sfx/paper/stamp-thud.wav",
+      "duration": 0.3,
+      "tags": [
+        "stamp",
+        "thud",
+        "slam",
+        "badge",
+        "impact"
+      ],
+      "source": "synth",
+      "prompt": "synthesised: 90->55 Hz sine thump + band-passed noise slap"
+    },
+    {
+      "id": "paper/swish-card",
+      "file": "sfx/paper/swish-card.wav",
+      "duration": 0.29,
+      "tags": [
+        "paper",
+        "swish",
+        "slide",
+        "whoosh",
+        "pop-in"
+      ],
+      "source": "elevenlabs",
+      "prompt": "Short paper card swish slide, fast airy whoosh, close-mic",
+      "credits": 50.0
+    },
+    {
+      "id": "paper/swish-card-long",
+      "file": "sfx/paper/swish-card-long.wav",
+      "duration": 1.615,
+      "tags": [
+        "paper",
+        "swish",
+        "slide",
+        "whoosh",
+        "collage"
+      ],
+      "source": "elevenlabs",
+      "prompt": "Short paper card swish slide, fast airy whoosh, close-mic",
+      "credits": 50.0
+    },
+    {
+      "id": "transition/impact-low",
+      "file": "sfx/transition/impact-low.wav",
+      "duration": 0.9,
+      "tags": [
+        "impact",
+        "hit",
+        "boom",
+        "reveal",
+        "title"
+      ],
+      "source": "synth",
+      "prompt": "tools/sfx_synth.py"
+    },
+    {
+      "id": "transition/riser-short",
+      "file": "sfx/transition/riser-short.wav",
+      "duration": 1.535,
+      "tags": [
+        "riser",
+        "build",
+        "tension",
+        "before-reveal"
+      ],
+      "source": "synth",
+      "prompt": "tools/sfx_synth.py"
+    },
+    {
+      "id": "transition/whoosh-long",
+      "file": "sfx/transition/whoosh-long.wav",
+      "duration": 1.085,
+      "tags": [
+        "whoosh",
+        "transition",
+        "slow"
+      ],
+      "source": "synth",
+      "prompt": "tools/sfx_synth.py"
+    },
+    {
+      "id": "transition/whoosh-short",
+      "file": "sfx/transition/whoosh-short.wav",
+      "duration": 0.445,
+      "tags": [
+        "whoosh",
+        "swipe",
+        "transition",
+        "fast"
+      ],
+      "source": "synth",
+      "prompt": "tools/sfx_synth.py"
+    },
+    {
+      "id": "ui/click",
+      "file": "sfx/ui/click.wav",
+      "duration": 0.02,
+      "tags": [
+        "click",
+        "tap",
+        "ui",
+        "select"
+      ],
+      "source": "synth",
+      "prompt": "tools/sfx_synth.py"
+    },
+    {
+      "id": "ui/ding",
+      "file": "sfx/ui/ding.wav",
+      "duration": 1.4,
+      "tags": [
+        "ding",
+        "bell",
+        "notification",
+        "correct",
+        "check"
+      ],
+      "source": "synth",
+      "prompt": "tools/sfx_synth.py"
+    },
+    {
+      "id": "ui/pop",
+      "file": "sfx/ui/pop.wav",
+      "duration": 0.1,
+      "tags": [
+        "pop",
+        "bubble",
+        "appear",
+        "sticker",
+        "caption"
+      ],
+      "source": "synth",
+      "prompt": "tools/sfx_synth.py"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "indie-pop-stomp-105bpm-a",
+      "file": "music/indie-pop-stomp-105bpm-a.mp3",
+      "duration": 65.0,
+      "bpm": 105,
+      "mood": ["upbeat", "confident", "handmade", "playful"],
+      "fits": ["paper-cut", "home services", "contractor", "local business"],
+      "source": "elevenlabs eleven_music_v2_5",
+      "prompt": "Upbeat, confident indie-pop instrumental at 105 BPM with punchy foot stomps, tight hand claps, plucky muted electric guitar, warm bass and light glockenspiel accents; playful handmade feel with crisp modern production. Steady driving energy throughout with a small lift halfway, no vocals, sits under speech, 65 seconds, ends on a clean final hit.",
+      "instrumental_checked": true,
+      "used_in": ["2026-10-06-hprtexas-high-profile-ridge"]
+    },
+    {
+      "id": "indie-pop-stomp-105bpm-b",
+      "file": "music/indie-pop-stomp-105bpm-b.mp3",
+      "duration": 65.0,
+      "bpm": 105,
+      "mood": ["upbeat", "confident", "handmade", "playful"],
+      "fits": ["paper-cut", "home services", "contractor", "local business"],
+      "source": "elevenlabs eleven_music_v2_5",
+      "prompt": "(same prompt as variant a)",
+      "instrumental_checked": true,
+      "used_in": []
+    }
+  ]
+}
